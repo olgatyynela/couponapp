@@ -1,4 +1,4 @@
-import {Alert, Modal, StyleSheet, Text, Pressable, View, ScrollView} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, View, ScrollView} from 'react-native';
 import { Coupon } from './Coupon';
 import React, {useState} from 'react';
 import { couponlist } from './coupons';
@@ -9,7 +9,8 @@ export default function CouponScreen() {
   return (
     <ScrollView>
         <View style={styles.centeredView}>
-        <Text style={{fontSize: 35, paddingBottom: 20}}>✨Kupongit✨</Text>
+        <Text style={{fontSize: 35, paddingBottom: 20}}>✨Coupons✨</Text>
+        <Text style={{alignSelf: 'center', paddingBottom: 20}}>Redeem coupons with earned points.</Text>
         {
           couponlist.map((coupon, index) => 
           <Coupon coupon={coupon} key={index}/>
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 100,
+    marginTop: 30,
     marginBottom: 100
   },
 

@@ -1,5 +1,5 @@
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native'; 
-export const Modaali = (props) => {
+export const CouponModal = (props) => {
 
     const onYesPress = () => {
         props.setModalVisible(!props.modalVisible)

@@ -1,4 +1,4 @@
-import { TouchableOpacity, Image } from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { CouponModal } from './Modal'
 
@@ -17,12 +17,17 @@ export const Coupon = props => {
     }
 
     return (
-        <TouchableOpacity onPress={pressCoupon}>
-            <Image
-                source={isUsed ? props.coupon.usedImage : props.coupon.image}
-                style={{ resizeMode: 'contain', width: 300, height: 250 }}
-            />
-
+        <TouchableOpacity onPress={pressCoupon} style={{ width: '100%' }}>
+            <View style={styles.coupon}>
+                <View style={{ alignSelf: 'center', display: 'flex' }}>
+                    <Text>This coupon</Text>
+                    <Text>is good for</Text>
+                </View>
+                <Text style={{ fontSize: 16 }}>{props.coupon.desc}</Text>
+                <Text style={{ fontSize: 16 }}>
+                    {props.coupon.pointsNeeded} points
+                </Text>
+            </View>
             <CouponModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
@@ -31,3 +36,20 @@ export const Coupon = props => {
         </TouchableOpacity>
     )
 }
+
+const styles = StyleSheet.create({
+    coupon: {
+        display: 'flex',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '97%',
+        backgroundColor: 'rgba(255, 204, 234, 1)',
+        borderRadius: 10,
+        marginTop: 10,
+        marginBottom: 1,
+        padding: 10,
+        height: 200,
+    },
+})

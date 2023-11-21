@@ -1,15 +1,49 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    TextInput,
+    TouchableOpacity,
+} from 'react-native'
+import { useState } from 'react'
 import { Coupon } from '../Components/Coupon'
-import { couponlist } from '../../coupons'
 
 export default function CouponScreen() {
+    const [coupon, setCoupon] = useState({ desc: '', pointsNeeded: '' })
+    const [coupons, setCoupons] = useState([])
+
+    const inputChanged = (name, value) => {
+        setCoupon({ ...coupon, [name]: value })
+    }
+
+    const addCoupon = () => {
+        setCoupons([coupon, ...coupons])
+        setCoupon({ desc: '', pointsNeeded: '' })
+    }
     return (
         <ScrollView>
             <View style={styles.centeredView}>
                 <Text style={{ alignSelf: 'center', paddingBottom: 20 }}>
                     Redeem coupons with earned points.
                 </Text>
-                {couponlist.map((coupon, index) => (
+                <TextInput
+                    style={styles.inputStyle}
+                    placeholder="Description"
+                    value={coupon.desc}
+                    onChangeText={value => inputChanged('desc', value)}
+                />
+                <TextInput
+                    style={styles.inputStyle}
+                    placeholder="Points needed"
+                    value={coupon.pointsNeeded}
+                    onChangeText={value => inputChanged('pointsNeeded', value)}
+                />
+
+                <TouchableOpacity style={styles.button} onPress={addCoupon}>
+                    <Text style={styles.buttonTextStyle}>Add coupon</Text>
+                </TouchableOpacity>
+                {coupons.map((coupon, index) => (
                     <Coupon coupon={coupon} key={index} />
                 ))}
             </View>
@@ -41,18 +75,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-        marginBottom: 5,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
+
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
@@ -61,5 +84,27 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
+    },
+    button: {
+        borderRadius: 10,
+        padding: 15,
+        elevation: 2,
+        marginVertical: 10,
+        backgroundColor: '#2196F3',
+        width: '97%',
+        alignSelf: 'center',
+    },
+    buttonTextStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    inputStyle: {
+        width: '97%',
+        padding: 15,
+        margin: 5,
+        boxSizing: 'border-box',
+        backgroundColor: 'white',
+        borderRadius: 10,
     },
 })

@@ -106,17 +106,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
     },
-    headerStyle: {
-        fontSize: 35,
-        alignSelf: 'center',
-        marginTop: 30,
-        paddingBottom: 20,
-    },
-    todoStyle: {
-        alignSelf: 'center',
-        fontSize: 15,
-        padding: 8,
-    },
 })
 
 export default TodoList

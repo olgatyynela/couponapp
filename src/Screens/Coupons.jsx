@@ -10,17 +10,27 @@ import { useState } from 'react'
 import { Coupon } from '../Components/Coupon'
 
 export default function CouponScreen() {
-    const [coupon, setCoupon] = useState({ desc: '', pointsNeeded: '' })
+    const [coupon, setCoupon] = useState({
+        desc: '',
+        pointsNeeded: '',
+        color: 'pink',
+    })
     const [coupons, setCoupons] = useState([])
 
     const inputChanged = (name, value) => {
-        setCoupon({ ...coupon, [name]: value })
+        if (name === 'desc' && value.length < 26) {
+            setCoupon({ ...coupon, [name]: value })
+        }
+        if (name === 'pointsNeeded' && value.length < 4) {
+            setCoupon({ ...coupon, [name]: value })
+        }
     }
 
     const addCoupon = () => {
         setCoupons([coupon, ...coupons])
-        setCoupon({ desc: '', pointsNeeded: '' })
+        setCoupon({ desc: '', pointsNeeded: '', color: coupon.color })
     }
+
     return (
         <ScrollView>
             <View style={styles.centeredView}>
@@ -39,7 +49,105 @@ export default function CouponScreen() {
                     value={coupon.pointsNeeded}
                     onChangeText={value => inputChanged('pointsNeeded', value)}
                 />
-
+                <View style={{ alignSelf: 'flex-start' }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            margin: 8,
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() =>
+                                setCoupon({ ...coupon, color: 'pink' })
+                            }
+                            style={{
+                                backgroundColor: '#FFCCEA',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                margin: 6,
+                                marginLeft: 10,
+                                borderColor: '#FE85CC',
+                                borderWidth: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            {coupon.color === 'pink' ? (
+                                <Text style={{ fontSize: 20, color: 'white' }}>
+                                    ✓
+                                </Text>
+                            ) : null}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() =>
+                                setCoupon({ ...coupon, color: 'purple' })
+                            }
+                            style={{
+                                backgroundColor: '#C6ADFF',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                margin: 6,
+                                borderColor: '#A077FF',
+                                borderWidth: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            {coupon.color === 'purple' ? (
+                                <Text style={{ fontSize: 20, color: 'white' }}>
+                                    ✓
+                                </Text>
+                            ) : null}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() =>
+                                setCoupon({ ...coupon, color: 'blue' })
+                            }
+                            style={{
+                                backgroundColor: '#B1DAFF',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                margin: 6,
+                                borderColor: '#6DBAFF',
+                                borderWidth: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            {coupon.color === 'blue' ? (
+                                <Text style={{ fontSize: 20, color: 'white' }}>
+                                    ✓
+                                </Text>
+                            ) : null}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() =>
+                                setCoupon({ ...coupon, color: 'orange' })
+                            }
+                            style={{
+                                backgroundColor: '#FFB77E',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 20,
+                                margin: 6,
+                                borderColor: '#FF923C',
+                                borderWidth: 2,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            {coupon.color === 'orange' ? (
+                                <Text style={{ fontSize: 20, color: 'white' }}>
+                                    ✓
+                                </Text>
+                            ) : null}
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <TouchableOpacity style={styles.button} onPress={addCoupon}>
                     <Text style={styles.buttonTextStyle}>Add coupon</Text>
                 </TouchableOpacity>
@@ -103,7 +211,6 @@ const styles = StyleSheet.create({
         width: '97%',
         padding: 15,
         margin: 5,
-        boxSizing: 'border-box',
         backgroundColor: 'white',
         borderRadius: 10,
     },

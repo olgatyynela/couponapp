@@ -5,9 +5,11 @@ import {
     ScrollView,
     TextInput,
     TouchableOpacity,
+    Alert,
 } from 'react-native'
 import { useState } from 'react'
 import { Coupon } from '../Components/Coupon'
+import { CouponColor } from '../Components/CouponColor'
 
 export default function CouponScreen() {
     const [coupon, setCoupon] = useState({
@@ -27,8 +29,12 @@ export default function CouponScreen() {
     }
 
     const addCoupon = () => {
-        setCoupons([coupon, ...coupons])
-        setCoupon({ desc: '', pointsNeeded: '', color: coupon.color })
+        if (coupon.decs !== '' && coupon.pointsNeeded !== '') {
+            setCoupons([coupon, ...coupons])
+            setCoupon({ desc: '', pointsNeeded: '', color: coupon.color })
+        } else {
+            Alert.alert('Empty coupon', 'Fill both fields', [{ text: 'OK' }])
+        }
     }
 
     return (
@@ -44,6 +50,7 @@ export default function CouponScreen() {
                     onChangeText={value => inputChanged('desc', value)}
                 />
                 <TextInput
+                    keyboardType="number-pad"
                     style={styles.inputStyle}
                     placeholder="Points needed"
                     value={coupon.pointsNeeded}
@@ -57,102 +64,33 @@ export default function CouponScreen() {
                             margin: 8,
                         }}
                     >
-                        <TouchableOpacity
-                            onPress={() =>
-                                setCoupon({ ...coupon, color: 'pink' })
-                            }
-                            style={{
-                                backgroundColor: '#FFCCEA',
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                margin: 6,
-                                marginLeft: 10,
-                                borderColor: '#FE85CC',
-                                borderWidth: 2,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            {coupon.color === 'pink' ? (
-                                <Text style={{ fontSize: 20, color: 'white' }}>
-                                    ✓
-                                </Text>
-                            ) : null}
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() =>
-                                setCoupon({ ...coupon, color: 'purple' })
-                            }
-                            style={{
-                                backgroundColor: '#C6ADFF',
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                margin: 6,
-                                borderColor: '#A077FF',
-                                borderWidth: 2,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            {coupon.color === 'purple' ? (
-                                <Text style={{ fontSize: 20, color: 'white' }}>
-                                    ✓
-                                </Text>
-                            ) : null}
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() =>
-                                setCoupon({ ...coupon, color: 'blue' })
-                            }
-                            style={{
-                                backgroundColor: '#B1DAFF',
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                margin: 6,
-                                borderColor: '#6DBAFF',
-                                borderWidth: 2,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            {coupon.color === 'blue' ? (
-                                <Text style={{ fontSize: 20, color: 'white' }}>
-                                    ✓
-                                </Text>
-                            ) : null}
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() =>
-                                setCoupon({ ...coupon, color: 'orange' })
-                            }
-                            style={{
-                                backgroundColor: '#FFB77E',
-                                width: 40,
-                                height: 40,
-                                borderRadius: 20,
-                                margin: 6,
-                                borderColor: '#FF923C',
-                                borderWidth: 2,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            {coupon.color === 'orange' ? (
-                                <Text style={{ fontSize: 20, color: 'white' }}>
-                                    ✓
-                                </Text>
-                            ) : null}
-                        </TouchableOpacity>
+                        <CouponColor
+                            color={'pink'}
+                            coupon={coupon}
+                            setCoupon={setCoupon}
+                        />
+                        <CouponColor
+                            color={'purple'}
+                            coupon={coupon}
+                            setCoupon={setCoupon}
+                        />
+                        <CouponColor
+                            color={'blue'}
+                            coupon={coupon}
+                            setCoupon={setCoupon}
+                        />
+                        <CouponColor
+                            color={'orange'}
+                            coupon={coupon}
+                            setCoupon={setCoupon}
+                        />
                     </View>
                 </View>
                 <TouchableOpacity style={styles.button} onPress={addCoupon}>
                     <Text style={styles.buttonTextStyle}>Add coupon</Text>
                 </TouchableOpacity>
                 {coupons.map((coupon, index) => (
-                    <Coupon coupon={coupon} key={index} />
+                    <Coupon coupon={coupon} key={index + coupon.desc} /> // mäppää kuponkilistan kupongit coupon komponenteiksi
                 ))}
             </View>
         </ScrollView>

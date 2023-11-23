@@ -1,45 +1,30 @@
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import { TouchableOpacity, View, Text, StyleSheet, Alert } from 'react-native'
+import React, { useState, useContext } from 'react'
 import { CouponModal } from './Modal'
+import { getColor, getSubColor } from '../utils'
+import { PointContext } from '../Context/PointContext'
 
 export const Coupon = props => {
+    const { points, setPoints } = useContext(PointContext)
     const [modalVisible, setModalVisible] = useState(false)
     const [isUsed, setIsUsed] = useState(false)
 
     const pressCoupon = () => {
-        if (!isUsed) {
+        if (!isUsed && props.coupon.pointsNeeded <= points) {
             setModalVisible(true)
+        }
+        if (props.coupon.pointsNeeded > points) {
+            Alert.alert(
+                'Not enough points',
+                'Do some more tasks to earn points',
+                [{ text: 'OK' }]
+            )
         }
     }
 
     const useCoupon = () => {
         setIsUsed(true)
-    }
-
-    const getColor = () => {
-        switch (props.coupon.color) {
-            case 'pink':
-                return '#FFCCEA'
-            case 'purple':
-                return '#C6ADFF'
-            case 'blue':
-                return '#B1DAFF'
-            case 'orange':
-                return '#FFB77E'
-        }
-    }
-
-    const getSubColor = () => {
-        switch (props.coupon.color) {
-            case 'pink':
-                return '#FE85CC'
-            case 'purple':
-                return '#A077FF'
-            case 'blue':
-                return '#6DBAFF'
-            case 'orange':
-                return '#FF923C'
-        }
+        setPoints(parseInt(points) - parseInt(props.coupon.pointsNeeded))
     }
 
     return (
@@ -50,10 +35,18 @@ export const Coupon = props => {
             <View
                 style={[
                     styles.coupon,
-                    { backgroundColor: getColor(), borderColor: getSubColor() },
+                    {
+                        backgroundColor: getColor(props.coupon.color),
+                        borderColor: getSubColor(props.coupon.color),
+                    },
                 ]}
             >
-                <View style={[styles.ball, { backgroundColor: getSubColor() }]}>
+                <View
+                    style={[
+                        styles.ball,
+                        { backgroundColor: getSubColor(props.coupon.color) },
+                    ]}
+                >
                     <Text style={styles.ballText}>
                         {`${props.coupon.pointsNeeded} \n points`}
                     </Text>
@@ -62,7 +55,11 @@ export const Coupon = props => {
                     <Text
                         style={[
                             styles.textStyle,
-                            { textShadowColor: getSubColor() },
+                            {
+                                textShadowColor: getSubColor(
+                                    props.coupon.color
+                                ),
+                            },
                         ]}
                     >
                         This coupon
@@ -70,7 +67,12 @@ export const Coupon = props => {
                     <Text
                         style={[
                             styles.textStyle,
-                            { fontSize: 18, textShadowColor: getSubColor() },
+                            {
+                                fontSize: 18,
+                                textShadowColor: getSubColor(
+                                    props.coupon.color
+                                ),
+                            },
                         ]}
                     >
                         is good for
@@ -78,7 +80,7 @@ export const Coupon = props => {
                     <View
                         style={[
                             styles.descStyle,
-                            { borderColor: getSubColor() },
+                            { borderColor: getSubColor(props.coupon.color) },
                         ]}
                     >
                         <Text style={styles.descTextStyle}>

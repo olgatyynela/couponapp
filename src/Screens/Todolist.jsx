@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
+    Alert,
 } from 'react-native'
 import { Todo } from '../Components/Todo'
 
@@ -14,12 +15,21 @@ const TodoList = () => {
     const [todos, setTodos] = useState([])
 
     const inputChanged = (name, value) => {
-        setTodo({ ...todo, [name]: value })
+        if (name === 'desc' && value.length < 26) {
+            setTodo({ ...todo, [name]: value })
+        }
+        if (name === 'points' && value.length < 4) {
+            setTodo({ ...todo, [name]: value })
+        }
     }
 
     const addTodo = () => {
-        setTodos([todo, ...todos])
-        setTodo({ desc: '', points: '' })
+        if (todo.decs !== '' && todo.points !== '') {
+            setTodos([todo, ...todos])
+            setTodo({ desc: '', points: '' })
+        } else {
+            Alert.alert('Empty task', 'Fill both fields', [{ text: 'OK' }])
+        }
     }
 
     return (
@@ -55,6 +65,7 @@ const TodoList = () => {
                                 }
                             />
                             <TextInput
+                                keyboardType="number-pad"
                                 style={styles.inputStyle}
                                 placeholder="Points"
                                 value={todo.points}

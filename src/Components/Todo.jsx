@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { useState, useContext } from 'react'
 import Checkbox from 'expo-checkbox'
 import { PointContext } from '../Context/PointContext'
@@ -7,7 +7,7 @@ export const Todo = props => {
     const [isChecked, setChecked] = useState(false)
     const { points, setPoints } = useContext(PointContext)
     return (
-        <View
+        <Pressable
             style={{
                 display: 'flex',
                 alignSelf: 'center',
@@ -21,6 +21,12 @@ export const Todo = props => {
                 marginBottom: 1,
                 padding: 10,
             }}
+            onPress={() => {
+                if (!isChecked) {
+                    setPoints(parseInt(props.todo.points) + points)
+                    setChecked(true)
+                }
+            }}
         >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Checkbox
@@ -31,18 +37,12 @@ export const Todo = props => {
                         height: 23,
                     }}
                     value={isChecked}
-                    onValueChange={() => {
-                        if (!isChecked) {
-                            setPoints(parseInt(props.todo.points) + points)
-                            setChecked(true)
-                        }
-                    }}
                     color={isChecked ? '#50C878' : undefined}
                 />
                 <Text style={{ fontSize: 16 }}>{props.todo.desc}</Text>
             </View>
 
             <Text style={{ fontSize: 16 }}>{props.todo.points} p</Text>
-        </View>
+        </Pressable>
     )
 }

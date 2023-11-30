@@ -1,10 +1,11 @@
 import { View, Text, Pressable } from 'react-native'
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import Checkbox from 'expo-checkbox'
 import { PointContext } from '../Context/PointContext'
+import { database } from '../database'
+import { update, ref } from 'firebase/database'
 
 export const Todo = props => {
-    const [isChecked, setChecked] = useState(false)
     const { points, setPoints } = useContext(PointContext)
     return (
         <Pressable
@@ -22,9 +23,13 @@ export const Todo = props => {
                 padding: 10,
             }}
             onPress={() => {
-                if (!isChecked) {
+                if (!props.todo.isDone) {
                     setPoints(parseInt(props.todo.points) + points)
-                    setChecked(true)
+                    //tässä päivitetään tietokantaan isDone trueksi
+
+                    update(ref(database, `/tasks/${props.todo.id}`), {
+                        isDone: true,
+                    })
                 }
             }}
         >
@@ -36,13 +41,30 @@ export const Todo = props => {
                         width: 23,
                         height: 23,
                     }}
-                    value={isChecked}
-                    color={isChecked ? '#50C878' : undefined}
+                    value={props.todo.isDone}
+                    color={props.todo.isDone ? '#50C878' : undefined}
                 />
-                <Text style={{ fontSize: 16 }}>{props.todo.desc}</Text>
+                <Text
+                    style={{
+                        fontSize: 16,
+                        color: props.todo.isDone ? 'grey' : 'black',
+                        textDecorationLine: props.todo.isDone
+                            ? 'line-through'
+                            : 'none',
+                    }}
+                >
+                    {props.todo.desc}
+                </Text>
             </View>
 
-            <Text style={{ fontSize: 16 }}>{props.todo.points} p</Text>
+            <Text
+                style={{
+                    fontSize: 16,
+                    color: props.todo.isDone ? 'grey' : 'black',
+                }}
+            >
+                {props.todo.points} p
+            </Text>
         </Pressable>
     )
 }

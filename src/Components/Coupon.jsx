@@ -3,14 +3,15 @@ import React, { useState, useContext } from 'react'
 import { CouponModal } from './Modal'
 import { getColor, getSubColor } from '../utils'
 import { PointContext } from '../Context/PointContext'
+import { update, ref } from 'firebase/database'
+import { database } from '../database'
 
 export const Coupon = props => {
     const { points, setPoints } = useContext(PointContext)
     const [modalVisible, setModalVisible] = useState(false)
-    const [isUsed, setIsUsed] = useState(false)
 
     const pressCoupon = () => {
-        if (!isUsed && props.coupon.pointsNeeded <= points) {
+        if (!props.coupon.isUsed && props.coupon.pointsNeeded <= points) {
             setModalVisible(true)
         }
         if (props.coupon.pointsNeeded > points) {
@@ -23,14 +24,16 @@ export const Coupon = props => {
     }
 
     const useCoupon = () => {
-        setIsUsed(true)
         setPoints(parseInt(points) - parseInt(props.coupon.pointsNeeded))
+        update(ref(database, `/coupons/${props.coupon.id}`), {
+            isUsed: true,
+        })
     }
 
     return (
         <TouchableOpacity
             onPress={pressCoupon}
-            style={{ width: '100%', opacity: isUsed ? 0.2 : 1 }}
+            style={{ width: '100%', opacity: props.coupon.isUsed ? 0.2 : 1 }}
         >
             <View
                 style={[

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     View,
     Text,
@@ -9,10 +9,24 @@ import {
     Alert,
 } from 'react-native'
 import { Todo } from '../Components/Todo'
+import { push, ref, onValue } from 'firebase/database'
+import { database } from '../database'
 
 const TodoList = () => {
     const [todo, setTodo] = useState({ desc: '', points: '' })
     const [todos, setTodos] = useState([])
+
+    useEffect(() => {
+        const todosRef = ref(database, 'tasks/')
+        onValue(todosRef, snapshot => {
+            const data = snapshot.val()
+            const todosWithKeys = data
+                ? Object.keys(data).map(key => ({ id: key, ...data[key] }))
+                : []
+            console.log(todosWithKeys)
+            setTodos(todosWithKeys.reverse())
+        })
+    }, [])
 
     const inputChanged = (name, value) => {
         if (name === 'desc' && value.length < 26) {
@@ -25,7 +39,11 @@ const TodoList = () => {
 
     const addTodo = () => {
         if (todo.decs !== '' && todo.points !== '') {
-            setTodos([todo, ...todos])
+            push(ref(database, 'tasks/'), {
+                desc: todo.desc,
+                points: todo.points,
+                isDone: false,
+            })
             setTodo({ desc: '', points: '' })
         } else {
             Alert.alert('Empty task', 'Fill both fields', [{ text: 'OK' }])

@@ -7,9 +7,11 @@ import {
     TouchableOpacity,
     Alert,
 } from 'react-native'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Coupon } from '../Components/Coupon'
 import { CouponColor } from '../Components/CouponColor'
+import { database } from '../database'
+import { ref, onValue, push } from 'firebase/database'
 
 export default function CouponScreen() {
     const [coupon, setCoupon] = useState({
@@ -18,6 +20,19 @@ export default function CouponScreen() {
         color: 'pink',
     })
     const [coupons, setCoupons] = useState([])
+
+    useEffect(() => {
+        const couponsRef = ref(database, 'coupons/')
+        onValue(couponsRef, snapshot => {
+            const data = snapshot.val()
+            const couponsWithKeys = data
+                ? Object.keys(data).map(key => ({ id: key, ...data[key] }))
+                : []
+            console.log(couponsWithKeys)
+
+            setCoupons(couponsWithKeys.reverse())
+        })
+    }, [])
 
     const inputChanged = (name, value) => {
         if (name === 'desc' && value.length < 26) {
@@ -29,8 +44,13 @@ export default function CouponScreen() {
     }
 
     const addCoupon = () => {
-        if (coupon.decs !== '' && coupon.pointsNeeded !== '') {
-            setCoupons([coupon, ...coupons])
+        if (coupon.desc !== '' && coupon.pointsNeeded !== '') {
+            push(ref(database, 'coupons/'), {
+                desc: coupon.desc,
+                pointsNeeded: coupon.pointsNeeded,
+                color: coupon.color,
+                isUsed: false,
+            })
             setCoupon({ desc: '', pointsNeeded: '', color: coupon.color })
         } else {
             Alert.alert('Empty coupon', 'Fill both fields', [{ text: 'OK' }])

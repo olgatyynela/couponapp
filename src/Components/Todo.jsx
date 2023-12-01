@@ -24,9 +24,12 @@ export const Todo = props => {
             }}
             onPress={() => {
                 if (!props.todo.isDone) {
-                    setPoints(parseInt(props.todo.points) + points)
+                    setPoints(parseInt(props.todo.points) + points.points)
+                    // päivitetään pisteet tietokantaan
+                    update(ref(database, `/points/${points.id}`), {
+                        points: parseInt(props.todo.points) + points.points,
+                    })
                     //tässä päivitetään tietokantaan isDone trueksi
-
                     update(ref(database, `/tasks/${props.todo.id}`), {
                         isDone: true,
                     })

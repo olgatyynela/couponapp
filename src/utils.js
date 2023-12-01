@@ -8,6 +8,10 @@ export const getColor = color => {
             return '#B1DAFF'
         case 'orange':
             return '#FFB77E'
+        case 'salmon':
+            return '#FFCCCC'
+        case 'green':
+            return '#C1E1C1'
     }
 }
 
@@ -21,5 +25,9 @@ export const getSubColor = color => {
             return '#6DBAFF'
         case 'orange':
             return '#FF923C'
+        case 'salmon':
+            return '#FE8585'
+        case 'green':
+            return '#54AD56'
     }
 }

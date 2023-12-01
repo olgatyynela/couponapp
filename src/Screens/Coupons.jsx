@@ -28,9 +28,14 @@ export default function CouponScreen() {
             const couponsWithKeys = data
                 ? Object.keys(data).map(key => ({ id: key, ...data[key] }))
                 : []
-            console.log(couponsWithKeys)
 
-            setCoupons(couponsWithKeys.reverse())
+            setCoupons(
+                couponsWithKeys
+                    .reverse()
+                    .sort((a, b) =>
+                        a.isUsed === b.isUsed ? 0 : a.isUsed ? 1 : -1
+                    )
+            )
         })
     }, [])
 
@@ -76,7 +81,7 @@ export default function CouponScreen() {
                     value={coupon.pointsNeeded}
                     onChangeText={value => inputChanged('pointsNeeded', value)}
                 />
-                <View style={{ alignSelf: 'flex-start' }}>
+                <View style={{ alignSelf: 'center' }}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -101,6 +106,16 @@ export default function CouponScreen() {
                         />
                         <CouponColor
                             color={'orange'}
+                            coupon={coupon}
+                            setCoupon={setCoupon}
+                        />
+                        <CouponColor
+                            color={'salmon'}
+                            coupon={coupon}
+                            setCoupon={setCoupon}
+                        />
+                        <CouponColor
+                            color={'green'}
                             coupon={coupon}
                             setCoupon={setCoupon}
                         />

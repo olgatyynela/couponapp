@@ -23,8 +23,13 @@ const TodoList = () => {
             const todosWithKeys = data
                 ? Object.keys(data).map(key => ({ id: key, ...data[key] }))
                 : []
-            console.log(todosWithKeys)
-            setTodos(todosWithKeys.reverse())
+            setTodos(
+                todosWithKeys
+                    .reverse()
+                    .sort((a, b) =>
+                        a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1
+                    )
+            )
         })
     }, [])
 

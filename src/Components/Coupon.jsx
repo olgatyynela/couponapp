@@ -11,10 +11,13 @@ export const Coupon = props => {
     const [modalVisible, setModalVisible] = useState(false)
 
     const pressCoupon = () => {
-        if (!props.coupon.isUsed && props.coupon.pointsNeeded <= points) {
+        if (
+            !props.coupon.isUsed &&
+            props.coupon.pointsNeeded <= points.points
+        ) {
             setModalVisible(true)
         }
-        if (props.coupon.pointsNeeded > points) {
+        if (props.coupon.pointsNeeded > points.points) {
             Alert.alert(
                 'Not enough points',
                 'Do some more tasks to earn points',
@@ -24,7 +27,14 @@ export const Coupon = props => {
     }
 
     const useCoupon = () => {
-        setPoints(parseInt(points) - parseInt(props.coupon.pointsNeeded))
+        setPoints(parseInt(points.points) - parseInt(props.coupon.pointsNeeded))
+        //päivitetään pisteet tietokantaan
+        update(ref(database, `/points/${points.id}`), {
+            points:
+                parseInt(points.points) - parseInt(props.coupon.pointsNeeded),
+        })
+
+        // tässä päivitetään tietokantaan isUsed trueksi
         update(ref(database, `/coupons/${props.coupon.id}`), {
             isUsed: true,
         })

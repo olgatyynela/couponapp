@@ -9,7 +9,7 @@ export const Points = () => {
                 paddingRight: 20,
             }}
         >
-            Points: {points}
+            Points: {points.points}
         </Text>
     )
 }

@@ -43,7 +43,7 @@ const TodoList = () => {
     }
 
     const addTodo = () => {
-        if (todo.decs !== '' && todo.points !== '') {
+        if (todo.desc !== '' && todo.points !== '') {
             push(ref(database, 'tasks/'), {
                 desc: todo.desc,
                 points: todo.points,

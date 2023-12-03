@@ -1,3 +1,8 @@
-tänne tulee dokumentaatio
+## CouponApp
 
-tämä on kuponkisovellus
+Käytetyt teknologiat:
+
+-   JavaScript
+-   React Native
+-   Firebase realtime database
+-   Prettier (koodin formatointiin)

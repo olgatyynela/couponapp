@@ -25,4 +25,4 @@ npm install
 npm start
 ```
 
-testitesti
+3. Lataa Expo Go sovellus ja skannaa QR-koodi

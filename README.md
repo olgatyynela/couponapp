@@ -1,13 +1,13 @@
 ## CouponApp
 
-Käytetyt teknologiat:
+### Käytetyt teknologiat:
 
 -   JavaScript
 -   React Native
 -   Firebase realtime database
 -   Prettier (koodin formatointiin)
 
-Sovelluksen käynnistysohjeet
+### Sovelluksen käynnistysohjeet
 
 1. Kloonaa repository
 

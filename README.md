@@ -25,4 +25,4 @@ npm install
 npm start
 ```
 
-3. Lataa Expo Go sovellus ja skannaa terminaalissa oleva QR-koodi
+3. Lataa Expo Go mobiilisovellus ja skannaa terminaalissa oleva QR-koodi
